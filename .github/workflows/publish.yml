@@ -1,0 +1,56 @@
+# Compiles the English CV on every push to main and publishes it to GitHub Pages.
+# The Chinese CV (cv_zh.tex) uses macOS system fonts, so it is built locally only.
+name: Publish CV
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Compile cv.tex
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: cv.tex
+
+      - name: Assemble site
+        run: |
+          mkdir -p site
+          cp cv.pdf site/cv.pdf
+          cat > site/index.html <<'EOF'
+          <!DOCTYPE html>
+          <meta charset="utf-8">
+          <meta http-equiv="refresh" content="0; url=cv.pdf">
+          <title>Hua Geng - CV</title>
+          <a href="cv.pdf">cv.pdf</a>
+          EOF
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}cv.pdf
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
