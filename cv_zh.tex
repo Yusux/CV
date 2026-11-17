@@ -1,0 +1,201 @@
+% Compile with xelatex.
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[fontset=mac]{ctex}
+\setmainfont{Times New Roman}
+
+\usepackage[vmargin=1.4cm, hmargin=1.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+
+\linespread{1.08}
+\pagestyle{empty}
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+% ---------------------------------------------------------------------------
+% Settings
+% ---------------------------------------------------------------------------
+% Your name as it appears in author lists (bold + underlined).
+\newcommand{\me}{\textcolor{black}{\textbf{\underline{Hua Geng}}}}
+
+% The widest right-hand label among your publications (venue or status).
+% Every paper title wraps at the same boundary, reserved by measuring it.
+\newcommand{\pubWidestMeta}{CVPR 2026}
+
+% ---------------------------------------------------------------------------
+% Layout
+% ---------------------------------------------------------------------------
+\titleformat{\section}{\Large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{14pt}{7pt}
+
+\newcommand{\cvbullet}{\raisebox{0.35ex}{\rule{2.3pt}{2.3pt}}}
+\setlist[itemize]{leftmargin=18pt, labelindent=7.85pt, labelwidth=2.3pt,
+  labelsep=7.85pt, align=left, label=\cvbullet, parsep=0pt, partopsep=0pt,
+  itemsep=1.8pt, topsep=3pt}
+
+% Bullet list for short items; entry list puts a 6pt gap between entries.
+\newenvironment{bullets}{\begin{itemize}}{\end{itemize}}
+\newenvironment{entries}{\begin{itemize}[itemsep=7pt, topsep=3pt]}{\end{itemize}}
+
+% Left text (wraps) with right-aligned text on the same row.
+\newsavebox{\rightbox}
+\newcommand{\alignedRow}[2]{%
+  \sbox{\rightbox}{#2}%
+  \noindent
+  \begin{tabular*}{\linewidth}{@{}p{\dimexpr\linewidth-\wd\rightbox-1em\relax}@{\hspace{1em}}r@{}}
+    {\raggedright #1\par} & #2 \\
+  \end{tabular*}\par
+}
+
+\definecolor{authorgray}{gray}{0.50}
+% Justified paragraph; prints nothing when left empty, so an entry can wait for its text.
+\newcommand{\overview}[1]{%
+  \if\relax\detokenize{#1}\relax\else
+    \vspace{3pt}{\small\justifying\noindent\textbf{简介：}\ignorespaces#1\par}%
+  \fi
+}
+
+% ---------------------------------------------------------------------------
+% Entry commands
+% ---------------------------------------------------------------------------
+% \educationEntry{School}{Dates}{bullet items}
+\newcommand{\educationEntry}[3]{%
+  \item \alignedRow{\textbf{#1}}{#2}
+  \begin{bullets} #3 \end{bullets}
+}
+
+% \experienceEntry{Organization}{Dates}{Role}{Advisor / Location}
+\newcommand{\experienceEntry}[4]{%
+  \item
+  \begin{tabular*}{\linewidth}[t]{@{}p{0.74\linewidth}@{\extracolsep{\fill}}r@{}}
+    \textbf{#1} & #2 \\
+    \textit{#3} & \textit{#4} \\
+  \end{tabular*}
+}
+
+% \publication[optional URL for the title]{Title}{Authors}{Venue or status}{Overview}
+\newsavebox{\pubmetabox}
+\newcommand{\publication}[5][]{%
+  \item
+  \begin{minipage}[t]{\linewidth}
+    \raggedright\small
+    \sbox{\pubmetabox}{\footnotesize\textbf{\pubWidestMeta}}%
+    \noindent
+    \begin{tabular*}{\linewidth}[t]{@{}p{\dimexpr\linewidth-\wd\pubmetabox-12pt\relax}@{\hspace{10pt}}p{\dimexpr\wd\pubmetabox+2pt\relax}@{}}
+      {\raggedright\textbf{\if\relax\detokenize{#1}\relax #2\else\href{#1}{\color{black}#2}\fi}\par}
+        & {\raggedleft\footnotesize\textbf{#4}\par} \\
+    \end{tabular*}\par
+    \vspace{2pt}
+    {\footnotesize\color{authorgray}#3\par}
+    \overview{#5}
+  \end{minipage}\par
+}
+
+% \project{Name}{Dates}{Links}{Overview}
+\newcommand{\project}[4]{%
+  \item
+  \begin{minipage}[t]{\linewidth}
+    \raggedright
+    \alignedRow{\textbf{#1}}{#2}
+    \vspace{2pt}
+    \textit{#3}\par
+    \overview{#4}
+  \end{minipage}\par
+}
+
+% \honor{Award}{Year}
+\newcommand{\honor}[2]{\item{\small\alignedRow{\textbf{#1}}{#2}}}
+
+% \row{Left text}{Right text}: one plain aligned line in a bullet list.
+\newcommand{\row}[2]{\item{\small\alignedRow{#1}{#2}}}
+\newcommand{\eq}{$^{*}$}
+\newcommand{\corr}{$^{\dagger}$}
+
+% ===========================================================================
+\begin{document}
+
+\begin{center}
+  {\huge\textbf{耿华}} \\[5pt]
+  邮箱：\href{mailto:huag@zju.edu.cn}{huag@zju.edu.cn} \ \textbar\ \
+  电话：(+86) 138-1333-7890 \ \textbar\ \
+  个人主页：\href{https://rorin.cc}{rorin.cc}
+\end{center}
+
+\section{教育背景}
+\begin{itemize}[leftmargin=0pt, labelwidth=0pt, labelindent=0pt, labelsep=0pt, label={}, itemsep=4pt, topsep=1pt]
+  \educationEntry{浙江大学\quad 硕士研究生}{2025.09 -- 至今}{
+    \item\small 计算机科学与技术学院，计算机技术。
+    \item\small 导师：\href{https://cshen.github.io/}{沈春华}教授 \ \textbar\ \ 研究方向：多模态、高效推理、三维视觉。
+  }
+  \educationEntry{浙江大学\quad 本科}{2021.09 -- 2025.06}{
+    \item\small 计算机科学与技术（\textbf{图灵班}），竺可桢学院。
+    \item\small GPA：\textbf{3.99/4.0}（92.33/100），专业排名：\textbf{2/79}。
+  }
+\end{itemize}
+
+\section{论文发表与投稿\hfill{\normalfont\footnotesize\color{authorgray}\eq\,共同第一作者 \quad \corr\,通讯作者}}
+\begin{entries}
+
+  \publication[https://arxiv.org/abs/2611.18549]
+    {JVT: Just Video Transformer Makes Pixel-Space Video Diffusion Simple}
+    {Jianjun Zhou\eq, \me\eq, Haoyu Guo\corr}
+    {在投}
+    {提出一个简洁的 DiT 式 Transformer，直接在像素空间做视频扩散，无需预训练自编码器、级联阶段或 U-Net 跳连，生成质量与潜空间扩散基线相当。像素空间的建模方式还支持相机条件下的 RGB 与视差联合生成，提升了相机跟随能力，并直接给出显式的场景几何。}
+
+  \publication[https://arxiv.org/abs/2604.21713]
+    {Unlocking the Power of Critical Factors for 3D Visual Geometry Estimation}
+    {Guangkai Xu\eq, \me\eq, Huanyi Zheng, Songyi Yin, Yanlong Sun, Hao Chen, Chunhua Shen\corr}
+    {CVPR 2026}
+    {系统分析前馈式视觉几何估计中的关键因素（数据规模、损失设计、对齐监督），并提出高分辨率增强模型 CARVE，引入深度、相机与点图之间的一致性损失，在点云重建、视频深度估计和相机位姿估计上取得领先结果。}
+
+  \publication[https://arxiv.org/abs/2609.32628]
+    {DraftAttention2: Fast Video Diffusion with Low-Resolution-Guided Mixed-Precision Attention}
+    {Rui Ding\eq, Haopeng Li\eq, W. Ma, Y. Zhou, Y. Li, X. Zhou, J. Cao, L. Li, \me, J. Gu, Jun Lin, Enze Xie, Xuan Shen\corr}
+    {在投}
+    {}
+
+  \publication[https://arxiv.org/abs/2606.03577]
+    {Eliciting Complex Spatial Reasoning in MLLMs through Wide-Baseline Matching}
+    {Hao Zhong\eq, Muzhi Zhu\eq, Shenyan Zeng\eq, A. Li, C. Chen, \me, D. Shi, W. Ye, Tao Lin\corr, Hao Chen\corr, Chunhua Shen\corr}
+    {CVPR 2026}
+    {}
+
+\end{entries}
+
+\section{项目经历}
+\begin{entries}
+
+  \project
+    {面向相机控制与三维一致性的视频生成强化学习后训练}
+    {2026.04 -- 2026.10}
+    {横向合作项目}
+    {独立负责整套流程，以三维反馈对 RGB--几何联合视频生成模型 Gen3R 进行强化学习后训练。设计多分量奖励并采用 GDPO 式 advantage，用 Advantage Weighted Matching 替代 Flow-GRPO，在确定性 ODE 采样上训练，PSNR 最高提升 7\%，三维一致性有明显改善。}
+
+  \project
+    {GPU 与分布式训练优化}
+    {2022.06 -- 2022.08}
+    {浙江大学超算队暑期实训}
+    {使用 tiling、shared memory 与 Tensor Core 实现卷积 CUDA kernel，性能排名 2/55。使用 DeepSpeed ZeRO、锁页内存、数据并行及超参数调优加速 GPT-2（124M）训练，训练到目标 loss 的端到端时间由 40 分钟降至 7 分钟。}
+
+\end{entries}
+
+\section{学生工作}
+\begin{bullets}
+  \row{\textbf{队员}，浙江大学超算队（ZJUSCT），参加 IndySCC 23 与 ASC24。}{2022.09 -- 2025.06}
+\end{bullets}
+
+\section{荣誉奖项}
+\begin{bullets}
+  \honor{浙江大学优秀毕业生}{2025}
+  \honor{浙江大学竺可桢学院荣誉证书}{2025}
+  \honor{ASC24 世界大学生超级计算机竞赛一等奖及最高计算性能奖}{2024}
+  \honor{IndySCC 23 第一名}{2023}
+  \honor{浙江省政府奖学金（三次）}{2021 -- 2024}
+\end{bullets}
+
+\end{document}
